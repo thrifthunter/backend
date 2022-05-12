@@ -3,9 +3,10 @@ async function ok (values, message, reply) {
     .code(200)
         .header('Content-Type', 'application/json; charset=utf-8')
         .send({
-            code : 200,
-            values : values,
+            error : false,
             message : message,
+            values : values,
+            
         });
 }
 
@@ -14,9 +15,9 @@ async function badRequest (values, message, reply) {
         .code(400)
         .header('Content-Type', 'application/json; charset=utf-8')
         .send({
-            code : 400,
-            values : values,
+            error : true,
             message : message,
+            values : values,
         });
 }
 
