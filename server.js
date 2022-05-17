@@ -10,7 +10,7 @@ fastify.register(require('./routes'));
 
 const start = async () => {
 	try {
-		await fastify.listen(process.env.APP_PORT || 3000);
+		await fastify.listen(process.env.APP_PORT , process.env.APP_HOST);
 		fastify.log.info(`server listening on ${fastify.server.address().port}`);
 	} catch (err) {
 		fastify.log.error(err);
