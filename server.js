@@ -16,14 +16,14 @@ fastify.register(require('@fastify/swagger'), {
 		externalDocs: {
 			url: 'https://swagger.io',
 			description: 'Find more info here'
-		},
-		securityDefinitions: {
-			bearer: {
-			  type: 'bearer',
-			  name: 'Authorization',
-			  in: 'header'
-			}
-		  }
+		}
+		//securityDefinitions: {
+		//	bearer: {
+		//	  type: 'bearer',
+		//	  name: 'Authorization',
+		//	  in: 'header'
+		//	}
+		//}
 	},
 	exposeRoute: true
 })
