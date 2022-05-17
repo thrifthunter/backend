@@ -1,4 +1,6 @@
 require('dotenv').config();
+const connection = require('./connection');
+
 const fastify = require('fastify')(
 	{ logger: true },
 );
@@ -17,13 +19,6 @@ fastify.register(require('@fastify/swagger'), {
 			url: 'https://swagger.io',
 			description: 'Find more info here'
 		},
-		securityDefinitions: {
-			bearer: {
-			  type: 'bearer',
-			  name: 'Authorization',
-			  in: 'header'
-			}
-		  }
 	},
 	exposeRoute: true
 })
@@ -38,12 +33,22 @@ fastify.register(require('./routes'), { prefix: 'api/v1' });
 
 const start = async () => {
 	try {
-		await fastify.listen(process.env.APP_PORT , process.env.APP_HOST);
+		await fastify.listen(process.env.APP_PORT, process.env.APP_HOST);
 		fastify.log.info(`server listening on ${fastify.server.address().port}`);
 	} catch (err) {
 		fastify.log.error(err);
 		process.exit(1);
 	}
+
+	try{
+		await connection.connect();
+		
+	}
+	catch(err){
+		console.error('error connecting: ' + err.stack);
+		process.exit(1);
+	}
+	fastify.log.info( 'db connected')
 };
 
 start();
