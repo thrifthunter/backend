@@ -28,7 +28,7 @@ async function register(request, reply) {
                     return response.badRequest('', `${error}`, reply)
                 }
 
-                return resolve({ name: username, email: email, });
+                return resolve({ username: username, email: email, });
             })
     );
 
@@ -37,16 +37,14 @@ async function register(request, reply) {
 
 async function login(request, reply) {
     const { email, password } = request.body
-    console.log(email, password)
     let sql = `SELECT * FROM users WHERE email = ?`;
     let data = await new Promise((resolve) =>
         connection.query(sql, [email], function (error, rows) {
             if (error) {
-                console.log(error);
                 return response.badRequest('', `${error}`, reply)
             }
-            if (rows.length > 0) {
-                const isMatch = bcrypt.compare(password, rows[0].password);
+            if (rows.length > 0 && password != undefined) {
+                const isMatch = bcrypt.compareSync(password, rows[0].password)
                 const token = jwt.sign({ id: rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1m' });
                 const data = {
                     username: rows[0].username,
@@ -72,7 +70,7 @@ async function login(request, reply) {
 async function profile(request, reply) {
     const token = request.headers.authorization.replace('Bearer ', '');
 
-    const id = await utils.verifyJWT(token,reply)
+    const id = await utils.verifyJWT(token, reply)
 
     // let decode;
     // try {
@@ -93,7 +91,6 @@ async function profile(request, reply) {
     const data = await new Promise((resolve) =>
         connection.query(`select * from users where id =?`, [id], function (error, rows) {
             if (error) {
-                console.log(error);
                 return response.badRequest('', `${error}`, reply)
             }
             if (rows.length > 0) {
@@ -106,7 +103,7 @@ async function profile(request, reply) {
                 return resolve(data)
             }
         }));
-   
+
     return response.ok(data, `Success`, reply);
 }
 

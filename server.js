@@ -1,12 +1,40 @@
 require('dotenv').config();
 const fastify = require('fastify')(
-	{logger: true},
+	{ logger: true },
 );
 
 // Fungsi ini untuk membuat kita bisa melakuakn post melalui www-url-encoded.
 // fastify.register(require('fastify-formbody'));
+fastify.register(require('@fastify/swagger'), {
+	routePrefix: '/',
+	swagger: {
+		info: {
+			title: 'API documentation',
+			description: 'Here is list of API routes documentation',
+			version: '1.0.0'
+		},
+		externalDocs: {
+			url: 'https://swagger.io',
+			description: 'Find more info here'
+		},
+		securityDefinitions: {
+			bearer: {
+			  type: 'bearer',
+			  name: 'Authorization',
+			  in: 'header'
+			}
+		  }
+	},
+	exposeRoute: true
+})
 
-fastify.register(require('./routes'));
+fastify.ready(async (err) => {
+	if (err) throw err
+	await fastify.swagger()
+
+})
+
+fastify.register(require('./routes'), { prefix: 'api/v1' });
 
 const start = async () => {
 	try {
