@@ -1,9 +1,11 @@
 let response = require('../response');
-let connection = require('../connection');
+let db = require('../connection');
 const utils = require('../utils')
 let moment = require('moment');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+
 
 async function register(request, reply) {
     if (request.body.password.length < 8)
@@ -19,7 +21,7 @@ async function register(request, reply) {
             values(?, ?, ?, ?, ?)`;
 
     const data = await new Promise((resolve) =>
-        connection.query(sql,
+        db.query(sql,
             [username, email, password, phone, created_at], async function (error, rows) {
                 if (error) {
                     if (error.code === 'ER_DUP_ENTRY') {
@@ -39,13 +41,15 @@ async function login(request, reply) {
     const { email, password } = request.body
     let sql = `SELECT * FROM users WHERE email = ?`;
     let data = await new Promise((resolve) =>
-        connection.query(sql, [email], function (error, rows) {
+        db.query(sql, [email], function (error, rows) {
             if (error) {
+
                 return response.badRequest('', `${error}`, reply)
             }
+
             if (rows.length > 0 && password != undefined) {
                 const isMatch = bcrypt.compareSync(password, rows[0].password)
-                const token = jwt.sign({ id: rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1m' });
+                const token = jwt.sign({ id: rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1d' });
                 const data = {
                     username: rows[0].username,
                     email: rows[0].email,
@@ -67,29 +71,40 @@ async function login(request, reply) {
     return response.ok(data, `Berhasil login!`, reply);
 }
 
-async function profile(request, reply) {
-    const token = request.headers.authorization.replace('Bearer ', '');
-
-    const id = await utils.verifyJWT(token, reply)
-
-    // let decode;
-    // try {
-    //     decode = jwt.verify(token, process.env.JWT_SECRET)
-    // }
-
-    // catch (err) {
-    //     if (err.name == "TokenExpiredError")
-    //         return reply
-    //             .code(401)
-    //             .header('Content-Type', 'application/json; charset=utf-8')
-    //             .send({
-    //                 error: true,
-    //                 message: "Token Expired",
-    //             });
-    // }
+async function updateProfile(request, reply) {
+    const { email, phone, username } = request.body;
+    const id = await utils.verifyJWT(request.headers.authorization, reply)
 
     const data = await new Promise((resolve) =>
-        connection.query(`select * from users where id =?`, [id], function (error, rows) {
+        db.query(`
+        update users 
+        set email = ?,
+        phone = ?,
+        username = ?
+        where id = ? 
+        `, [email, phone, username, id], function (error) {
+            if (error) {
+                return response.badRequest('', `${error}`, reply)
+            }
+            else {
+                const data = {
+                    username: username,
+                    email: email,
+                    phone: phone
+                };
+
+                return resolve(data)
+            }
+        }));
+
+    return response.ok(data, `Success`, reply);
+}
+
+async function getProfile(request, reply) {
+
+    const id = await utils.verifyJWT(request.headers.authorization, reply)
+    const data = await new Promise((resolve) =>
+        db.query(`select * from users where id =?`, [id], function (error, rows) {
             if (error) {
                 return response.badRequest('', `${error}`, reply)
             }
@@ -107,9 +122,9 @@ async function profile(request, reply) {
     return response.ok(data, `Success`, reply);
 }
 
-
 module.exports = {
     register,
     login,
-    profile
+    getProfile,
+    updateProfile
 };

@@ -1,11 +1,10 @@
-const { register } = require("./users")
-
 const string = {
     type: 'string'
 }
 
 const boolean = {
-    type: 'boolean'
+    type: 'boolean',
+    default: false
 }
 
 
@@ -92,8 +91,44 @@ const loginOpt = {
 const getProfileOpt = {
     schema: {
         description: 'get data user profile',
-        headers:{
-            Authorization : string
+        headers: {
+            Authorization: string
+        },
+        response: {
+            200: {
+                type: "object",
+                properties: {
+                    error: boolean,
+                    message: string,
+                    values: {
+                        type: 'object',
+                        properties: {
+                            username: string,
+                            email: string,
+                            phone: string
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+const updateProfileOpt = {
+    schema: {
+        description: 'update user profile',
+        headers: {
+            Authorization: string
+        },
+        body: {
+            type: 'object',
+            required: ['username', 'email', 'phone'],
+            properties: {
+                username: string,
+                email: string,
+                phone: string
+            }
         },
         response: {
             200: {
@@ -120,5 +155,6 @@ module.exports = {
     defaultOpt,
     registerOpt,
     loginOpt,
-    getProfileOpt
+    getProfileOpt,
+    updateProfileOpt
 }

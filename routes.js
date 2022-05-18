@@ -15,7 +15,9 @@ async function routes(fastify, options) {
 
 	fastify.post('/login', userOpt.loginOpt, users.login);
 
-	fastify.get('/profile',userOpt.getProfileOpt, users.profile);
+	fastify.get('/profile',userOpt.getProfileOpt, users.getProfile);
+
+	fastify.put('/profile',userOpt.updateProfileOpt, users.updateProfile);
 }
 
 module.exports = routes;
