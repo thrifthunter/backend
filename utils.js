@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 let response = require('./response');
 
-async function verifyJWT (token, reply) {
-   
+async function verifyJWT (headers, reply) {
+    const token = headers.replace('Bearer ', '');
     let decode;
     try {
         decode = jwt.verify(token, process.env.JWT_SECRET)
