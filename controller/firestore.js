@@ -1,6 +1,12 @@
 let response = require('../response');
-const Firestore = require('@google-cloud/firestore')
-const db = new Firestore();
+const { initializeApp, applicationDefault } = require('firebase-admin/app');
+const { getFirestore } = require('firebase-admin/firestore');
+
+initializeApp({
+    credential: applicationDefault()
+  });
+
+const db = getFirestore();
 
 async function getItems(request, reply) {
 
