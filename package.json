@@ -1,7 +1,7 @@
 {
   "name": "thrift",
   "version": "1.0.0",
-  "description": "",
+  "description": "before star run ``npm i`` first.",
   "main": "index.js",
   "scripts": {
     "start": "node server",
@@ -26,5 +26,13 @@
   "devDependencies": {
     "@google-cloud/firestore": "^5.0.2",
     "fastify-swagger": "^5.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thrifthunter/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thrifthunter/backend/issues"
+  },
+  "homepage": "https://github.com/thrifthunter/backend#readme"
 }
