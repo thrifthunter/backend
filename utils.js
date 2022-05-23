@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 let response = require('./response');
 
-async function verifyJWT (headers, reply) {
+async function verifyJWT(headers, reply) {
     const token = headers.replace('Bearer ', '');
     let decode;
     try {
@@ -17,6 +17,13 @@ async function verifyJWT (headers, reply) {
                     error: true,
                     message: "Token Expired",
                 });
+        else return reply
+            .code(401)
+            .header('Content-Type', 'application/json; charset=utf-8')
+            .send({
+                error: true,
+                message: "Missing Token",
+            });
     }
 
     return decode.id
