@@ -1,27 +1,29 @@
 const users = require('./controller/users');
-const userOpt = require('./controller/users_opt')
-const mysql = require('mysql');
+const userOpt = require('./option/users_opt')
 const items = require('./controller/firestore');
-// const  
+const itemOpt = require('./option/items');
+
 
 
 // eslint-disable-next-line no-unused-vars
 async function routes(fastify, options) {
-	// Route Ujicoba
-	fastify.get('/', userOpt.defaultOpt, (request, reply) => {
-		
-		reply.send({ message: test , code: 200 });
-	});
+    // Route Ujicoba
+    fastify.get('/', userOpt.defaultOpt, (request, reply) => {
 
-	fastify.post('/register', userOpt.registerOpt, users.register);
+        reply.send({ message: 'test', code: 200 });
+    });
 
-	fastify.post('/login', userOpt.loginOpt, users.login);
+    fastify.post('/register', userOpt.registerOpt, users.register);
 
-	fastify.get('/profile', userOpt.getProfileOpt, users.getProfile);
+    fastify.post('/login', userOpt.loginOpt, users.login);
 
-	fastify.put('/profile', userOpt.updateProfileOpt, users.updateProfile);
+    fastify.get('/profile', userOpt.getProfileOpt, users.getProfile);
 
-	fastify.get('/items', items.getItems);
+    fastify.put('/profile', userOpt.updateProfileOpt, users.updateProfile);
+
+    fastify.get('/items', 
+    // itemOpt.items, 
+    items.getItems);
 }
 
 module.exports = routes;

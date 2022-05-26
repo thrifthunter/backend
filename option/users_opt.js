@@ -1,27 +1,4 @@
-const string = {
-    type: 'string'
-}
-
-const boolean = {
-    type: 'boolean',
-    default: false
-}
-
-
-const defaultOpt = {
-    schema: {
-        description: 'test route',
-        response: {
-            200: {
-                type: "object",
-                properties: {
-                    message: string
-                }
-
-            }
-        }
-    }
-}
+const {string,boolean,defaultOpt} = require('./default')
 
 const registerOpt = {
     schema: {
@@ -91,9 +68,7 @@ const loginOpt = {
 const getProfileOpt = {
     schema: {
         description: 'get data user profile',
-        headers: {
-            Authorization: string
-        },
+        security: [{ ApiToken: []}],
         response: {
             200: {
                 type: "object",
@@ -118,9 +93,7 @@ const getProfileOpt = {
 const updateProfileOpt = {
     schema: {
         description: 'update user profile',
-        headers: {
-            Authorization: string
-        },
+        security: [{ ApiToken: []}],
         body: {
             type: 'object',
             required: ['username', 'email', 'phone'],
