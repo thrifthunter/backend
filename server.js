@@ -1,6 +1,5 @@
 require('dotenv').config();
 const connection = require('./connection');
-require('@google-cloud/debug-agent').start({ serviceContext: { enableCanary: true } });
 
 const fastify = require('fastify')(
     { logger: true },
