@@ -12,7 +12,11 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
-          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi:${{ github.sha }}
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
+          INS_TEMPLATES: webapi-templates-${{ github.sha }}
+          REGION: us-central1
+          NETWORK: default
+          SUBNET: default
         steps:
 
         - name: Login
@@ -34,5 +38,15 @@ jobs:
         - name: Push Docker image
           run: docker push $IMAGE_NAME
 
-        - name: Check docker image name
-          run: echo ${{ steps.meta.outputs }}
+        - name: create instance template
+          run: |
+          gcloud compute instance-templates create-with-container $INS_TEMPLATES \
+            --container-image=$IMAGE_NAME:latest \
+            --tags=http-server --machine-type=e2-micro --boot-disk-size=40 \
+            --network=$NETWORK --subnet=$SUBNET --no-address --region=$REGION
+        
+        - name: create new MIG
+          run: |
+          gcloud compute instance-groups managed rolling-action start-update webapi-mig \
+            --version=template= $INS_TEMPLATES \
+            --type=proactive --region=$REGION 
