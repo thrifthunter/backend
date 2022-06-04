@@ -1,5 +1,5 @@
 const users = require('./controller/users');
-const userOpt = require('./option/users_opt')
+const userOpt = require('./option/users')
 const items = require('./controller/firestore');
 const itemOpt = require('./option/items');
 

@@ -1,13 +1,13 @@
-const {string,boolean,defaultOpt} = require('./default')
+const { string, boolean, defaultOpt } = require('./default')
 
 const registerOpt = {
     schema: {
 
         body: {
             type: 'object',
-            required: ['username', 'email', 'password', 'phone'],
+            required: ['name', 'email', 'password', 'phone'],
             properties: {
-                username: string,
+                name: string,
                 email: string,
                 password: string,
                 phone: string
@@ -18,16 +18,8 @@ const registerOpt = {
                 type: "object",
                 properties: {
                     error: boolean,
-                    message: string,
-                    values: {
-                        type: 'object',
-                        properties: {
-                            username: string,
-                            email: string,
-                        }
-                    }
+                    message: string
                 }
-
             }
         }
     }
@@ -53,13 +45,11 @@ const loginOpt = {
                     values: {
                         type: 'object',
                         properties: {
-                            username: string,
-                            email: string,
+                            name: string,
                             token: string
                         }
                     }
                 }
-
             }
         }
     }
@@ -68,7 +58,7 @@ const loginOpt = {
 const getProfileOpt = {
     schema: {
         description: 'get data user profile',
-        security: [{ ApiToken: []}],
+        security: [{ ApiToken: [] }],
         response: {
             200: {
                 type: "object",
@@ -78,7 +68,7 @@ const getProfileOpt = {
                     values: {
                         type: 'object',
                         properties: {
-                            username: string,
+                            name: string,
                             email: string,
                             phone: string
                         }
@@ -93,12 +83,12 @@ const getProfileOpt = {
 const updateProfileOpt = {
     schema: {
         description: 'update user profile',
-        security: [{ ApiToken: []}],
+        security: [{ ApiToken: [] }],
         body: {
             type: 'object',
-            required: ['username', 'email', 'phone'],
+            required: ['name', 'email', 'phone'],
             properties: {
-                username: string,
+                name: string,
                 email: string,
                 phone: string
             }
@@ -112,7 +102,7 @@ const updateProfileOpt = {
                     values: {
                         type: 'object',
                         properties: {
-                            username: string,
+                            name: string,
                             email: string,
                             phone: string
                         }
