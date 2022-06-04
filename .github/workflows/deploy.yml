@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ ci-cd ]
   pull_request:
     branches: [ main ]
 
@@ -30,9 +30,6 @@ jobs:
 
         - name: Build Docker image
           run: docker build . -t $IMAGE_NAME
-
-        - name: Test Docker image
-          run: docker run $IMAGE_NAME sh -c "go test -v"
 
         - name: Push Docker image
           run: docker push $IMAGE_NAME
