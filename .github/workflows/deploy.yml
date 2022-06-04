@@ -48,5 +48,5 @@ jobs:
         - name: create new MIG
           run: |
             gcloud compute instance-groups managed rolling-action start-update webapi-mig \
-              --version=template= ${{ env.INS_TEMPLATES }} \
+              --version=template=${{ env.INS_TEMPLATES }} \
               --type=proactive --region=${{ env.REGION}} 
