@@ -12,7 +12,7 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
-          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi:$(git rev-parse --short "$GITHUB_SHA")
         steps:
 
         - name: Login
@@ -33,13 +33,6 @@ jobs:
 
         - name: Push Docker image
           run: docker push $IMAGE_NAME
-        
-        - name: Extract Docker metadata (tags, labels) for Docker
-          id: meta
-          uses: docker/metadata-action@v3
-          with:
-            tags: type=sha,prefix=,format=short  
-            images: $IMAGE_NAME
 
         - name: Check docker image name
           run: echo ${{ steps.meta.outputs }}
