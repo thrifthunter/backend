@@ -12,7 +12,7 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
-          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi:$(git rev-parse --short "$GITHUB_SHA")
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi:${{ github.sha }}
         steps:
 
         - name: Login
