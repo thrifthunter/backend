@@ -40,13 +40,13 @@ jobs:
 
         - name: create instance template
           run: |
-          gcloud compute instance-templates create-with-container $INS_TEMPLATES \
-            --container-image=$IMAGE_NAME:latest \
-            --tags=http-server --machine-type=e2-micro --boot-disk-size=40 \
-            --network=$NETWORK --subnet=$SUBNET --no-address --region=$REGION
+            gcloud compute instance-templates create-with-container ${{ INS_TEMPLATES }} \
+              --container-image=$IMAGE_NAME:latest \
+              --tags=http-server --machine-type=e2-micro --boot-disk-size=40 \
+              --network=${{ NETWORK }} --subnet=${{ SUBNET }} --no-address --region=${{ REGION }}
         
         - name: create new MIG
           run: |
-          gcloud compute instance-groups managed rolling-action start-update webapi-mig \
-            --version=template= $INS_TEMPLATES \
-            --type=proactive --region=$REGION 
+            gcloud compute instance-groups managed rolling-action start-update webapi-mig \
+              --version=template= ${{ INS_TEMPLATES }} \
+              --type=proactive --region=${{ REGIO N}} 
