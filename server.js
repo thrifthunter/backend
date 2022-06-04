@@ -12,7 +12,7 @@ fastify.register(require('@fastify/swagger'), {
     swagger: {
         info: {
             title: 'API documentation',
-            description: 'Here is list of API routes documentation',
+            description: 'Here is list of API routes documentation | CI/CD',
             version: '1.0.0'
         },
         externalDocs: {

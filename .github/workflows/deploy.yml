@@ -1,32 +1,52 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Deploy App Engine
+name: deploy
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v3
+    deploy:
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        env:
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
+          INS_TEMPLATES: webapi-templates-${{ github.sha }}
+          REGION: us-central1
+          NETWORK: default
+          SUBNET: default
+        steps:
 
-      - name: "auth to google cloud" 
-        uses: 'google-github-actions/auth@v0'
-        with:
-         credentials_json: '${{ secrets.GCP_SA_KEY }}'
+        - name: Login
+          uses: google-github-actions/setup-gcloud@v0
+          with:
+            project_id: ${{ secrets.GCP_PROJECT }}
+            service_account_email: ${{ secrets.GCP_EMAIL }}
+            service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-      - id: 'deploy'
-        name: 'deploy to app engine'
-        uses: 'google-github-actions/deploy-appengine@v0'
-        with:
-          deliverables: 'app.yaml'
-          project_id: '${{ secrets.GCP_PROJECT }}'
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
 
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Build Docker image
+          run: docker build . -t $IMAGE_NAME
+
+        - name: Push Docker image
+          run: docker push $IMAGE_NAME
+
+        - name: create instance template
+          run: |
+            gcloud compute instance-templates create-with-container ${{ env.INS_TEMPLATES }} \
+              --container-image=${{ env.IMAGE_NAME }}:latest \
+              --tags=http-server --machine-type=e2-micro --boot-disk-size=40 \
+              --network=${{ env.NETWORK }} --subnet=${{ env.SUBNET }} --no-address --region=${{ env.REGION }}
+        
+        - name: create new MIG
+          run: |
+            gcloud compute instance-groups managed rolling-action start-update webapi-mig \
+              --version=template=${{ env.INS_TEMPLATES }} \
+              --type=proactive --region=${{ env.REGION}} 
