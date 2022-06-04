@@ -3,8 +3,8 @@ name: deploy
 on:
   push:
     branches: [ ci-cd ]
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
 
@@ -34,5 +34,12 @@ jobs:
         - name: Push Docker image
           run: docker push $IMAGE_NAME
         
+        - name: Extract Docker metadata (tags, labels) for Docker
+          id: meta
+          uses: docker/metadata-action@v3
+          with:
+            tags: type=sha,prefix=,format=short  
+            images: $IMAGE_NAME
+
         - name: Check docker image name
-          run: echo $IMAGE_NAME          
+          run: echo ${{ steps.meta.outputs }}
