@@ -5,6 +5,7 @@ const fastify = require('fastify')(
     { logger: true },
 );
 
+fastify.register(require('@fastify/formbody'))
 // Fungsi ini untuk membuat kita bisa melakuakn post melalui www-url-encoded.
 // fastify.register(require('fastify-formbody'));
 fastify.register(require('@fastify/swagger'), {
