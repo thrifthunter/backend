@@ -21,9 +21,9 @@ async function routes(fastify, options) {
 
     fastify.put('/profile', userOpt.updateProfileOpt, users.updateProfile);
 
-    fastify.get('/items', 
-    // itemOpt.items, 
-    items.getItems);
+    fastify.get('/items',
+        itemOpt.items,
+        items.getItems);
 }
 
 module.exports = routes;

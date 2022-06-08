@@ -4,12 +4,10 @@ const items = {
     schema: {
         description: 'get all items',
         querystring: {
-            limit: number,
-            order: string,
-            orderBy: string,
+            page: number,
             keyword: string,
             category: string,
-            offset: number
+            size: number
         },
         response: {
             200: {
@@ -20,10 +18,13 @@ const items = {
                     values: {
                         type: 'array',
                         properties: {
-                            id: string,
-                            Description: string,
-                            Type: string,
-                            Price: number                        }
+                            account: string, 
+                            category: string,
+                            description: string,
+                            name: string,
+                            photoUrl: string,
+                            price: number
+                        }
                     }
                 }
 
