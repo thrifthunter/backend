@@ -38,7 +38,7 @@ jobs:
             --build-arg dbHost=${{ secrets.DB_HOST }} \
             --build-arg dbPass=${{ secrets.DB_PASSWORD }} \
             --build-arg privKey=${{ secrets.FIRESTORE_PRIVKEY }} \
-            --build-arg privKeyId=${{ secrets.FIRESTORE_PRIVKEYid }} \
+            --build-arg privKeyId=${{ secrets.FIRESTORE_PRIVKEYID }} \
             . -t $IMAGE_NAME
 
         - name: Push Docker image
