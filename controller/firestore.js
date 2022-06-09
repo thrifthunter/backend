@@ -11,7 +11,8 @@ const db = getFirestore();
 async function getItems(request, reply) {
     let querySnapshot
     const { page, size, keyword, category } = request.query
-    console.log((page - 1) * size, size, keyword, category)
+    const newKeyword = keyword?.toLowerCase()
+    const keywordArray = newKeyword?.split(' ');
     const query = db.collection('items');
     if (keyword == undefined && category == undefined) {
         querySnapshot = await query
@@ -28,7 +29,7 @@ async function getItems(request, reply) {
         querySnapshot = await query
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
-            .where('keyword', 'array-contains', keyword)
+            .where('keyword', 'array-contains-any', keywordArray)
             .get();
     } else {
         console.log('here')
@@ -36,7 +37,7 @@ async function getItems(request, reply) {
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
             .where('category', '==', category)
-            .where('keyword', 'array-contains', keyword)
+            .where('keyword', 'array-contains-any', keywordArray)
             .get();
     }
 
