@@ -14,18 +14,18 @@ async function getItems(request, reply) {
     const newKeyword = keyword?.toLowerCase()
     const keywordArray = newKeyword?.split(' ');
     const query = db.collection('items');
-    if (keyword == undefined && category == undefined) {
+   if (keyword == undefined || keyword == '' && category == undefined || category == '') {
         querySnapshot = await query
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
             .get();
-    } else if (keyword == undefined) {
+    } else if (keyword == undefined || keyword == '') {
         querySnapshot = await query
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
             .where('category', '==', category)
             .get();
-    } else if (category == undefined) {
+    } else if (category == undefined || category == '') {
         querySnapshot = await query
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
