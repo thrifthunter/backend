@@ -14,9 +14,9 @@ jobs:
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
           INS_TEMPLATES: webapi-templates-${{ github.sha }}
-          REGION: us-central1
-          NETWORK: default
-          SUBNET: default
+          REGION: asia-southeast2
+          NETWORK: webapi-net
+          SUBNET: webapi-subnet
         steps:
 
         - name: Login
