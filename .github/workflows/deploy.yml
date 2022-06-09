@@ -12,7 +12,7 @@ jobs:
         name: Deploy newly build container
         runs-on: ubuntu-latest
         env:
-          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
+          IMAGE_NAME: asia.gcr.io/${{ secrets.GCP_PROJECT }}/webapi
           INS_TEMPLATES: webapi-templates-${{ github.sha }}
           REGION: asia-southeast2
           NETWORK: webapi-net
