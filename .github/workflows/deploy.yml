@@ -34,7 +34,7 @@ jobs:
 
         - name: Build Docker image
           run: |
-            docker build  
+            docker build \
             --build-arg dbHost=${{ secrets.DB_HOST }} \
             --build-arg dbPass=${{ secrets.DB_PASSWORD }} \
             --build-arg privKey=${{ secrets.FIRESTORE_PRIVKEY }} \
