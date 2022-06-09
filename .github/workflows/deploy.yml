@@ -47,7 +47,7 @@ jobs:
           run: |
             gcloud compute instance-templates create-with-container ${{ env.INS_TEMPLATES }} \
               --container-image=${{ env.IMAGE_NAME }}:latest \
-              --tags=[http-server,thrift-api] --machine-type=e2-micro --boot-disk-size=40 \
+              --tags=http-server,thrift-api --machine-type=e2-micro --boot-disk-size=40 \
               --network=${{ env.NETWORK }} --subnet=${{ env.SUBNET }} --no-address --region=${{ env.REGION }}
         
         - name: create new MIG
