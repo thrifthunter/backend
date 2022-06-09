@@ -21,8 +21,8 @@ COPY . ./
 
 RUN sed -i "s|DB_PASSWORD=|DB_PASSWORD=$DB_PASS|g" /home/app/.env
 RUN sed -i "s|DB_HOST=|DB_HOST=$DB_HOST|g" /home/app/connection.js
-RUN echo $FIRESTORE_CRED | base64 --decode > firestorecred.json
+RUN echo $FIRESTORE_CRED > encodedfile.txt
+RUN base64 -d encodedfile.txt > firestorecred.json
 RUN npm install 
 
-# start server
 CMD npm start

@@ -9,7 +9,7 @@ on:
 jobs:
 
     deploy:
-        name: Setup Gcloud Account
+        name: Deploy newly build container
         runs-on: ubuntu-latest
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/webapi
