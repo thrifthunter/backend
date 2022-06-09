@@ -1,7 +1,7 @@
 let response = require('../response');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require ('../firestorecred.json')
+const serviceAccount = require('../firestorecred.json')
 initializeApp({
     credential: cert(serviceAccount)
 });
@@ -55,6 +55,22 @@ async function getItems(request, reply) {
     return response.ok(data, `Success`, reply);
 }
 
+async function getItemById(request, reply) {
+    const id = request.params.id
+    const query = db.collection('items').doc(id);
+    const doc = await query.get();
+    if (!doc.exists) {
+        return response.badRequest('', `not found`, reply)
+    } else {
+        tempData = doc.data();
+        delete tempData.keyword
+        data = tempData
+    }
+
+    return response.ok(data, `Success`, reply);
+}
+
 module.exports = {
-    getItems
+    getItems,
+    getItemById
 }

@@ -24,6 +24,10 @@ async function routes(fastify, options) {
     fastify.get('/items',
         itemOpt.items,
         items.getItems);
+
+    fastify.get('/items/:id',
+        itemOpt.item,
+        items.getItemById);
 }
 
 module.exports = routes;

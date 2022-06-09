@@ -18,7 +18,43 @@ const items = {
                     values: {
                         type: 'array',
                         properties: {
-                            account: string, 
+                            account: string,
+                            category: string,
+                            description: string,
+                            name: string,
+                            photoUrl: string,
+                            price: number
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+const item = {
+    schema: {
+        description: 'get all items',
+        params: {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                    description: 'id'
+                }
+            }
+        },
+        response: {
+            200: {
+                type: "object",
+                properties: {
+                    error: boolean,
+                    message: string,
+                    values: {
+                        type: 'object',
+                        properties: {
+                            account: string,
                             category: string,
                             description: string,
                             name: string,
@@ -34,5 +70,6 @@ const items = {
 }
 
 module.exports = {
-    items
+    items,
+    item
 }
