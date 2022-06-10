@@ -1,9 +1,9 @@
 # backend
 
-before star run ``npm i`` first.
+Before start run ``npm i`` first.
 
-To start the web api
-``npm run start`` or ``npm run dev``
+To start the webapi run
+``npm run start`` or ``npm run dev`` 
 
 # documentation 
 

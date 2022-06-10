@@ -14,7 +14,7 @@ async function getItems(request, reply) {
     const newKeyword = keyword?.toLowerCase()
     const keywordArray = newKeyword?.split(' ');
     const query = db.collection('items');
-    if (keyword == undefined || keyword == '' && category == undefined || category == '') {
+   if (keyword == undefined || keyword == '' && category == undefined || category == '') {
         querySnapshot = await query
             .limit(size != undefined ? size : 10)
             .offset(page != undefined ? (page - 1) * size : 0)
