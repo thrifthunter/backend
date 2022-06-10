@@ -51,14 +51,15 @@ const start = async () => {
     }
 
     try {
-        connection.connect();
+        connection.query("select * from items");
+        fastify.log.info('db connected')
+    } catch (error) {
+        console.error(err);
     }
 
-    catch (err) {
-        console.error('error connecting: ' + err.stack);
-        process.exit(1);
-    }
-    fastify.log.info('db connected')
+
+
+
 };
 
 start();
